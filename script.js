@@ -8,8 +8,15 @@ function addTask() {
    }
    else {
     let li= document.createElement("li");
-    li.innerHTML = inputBox.value;
+    li.innerHTML = `<p>${inputBox.value}</p>`;
     listContainer.appendChild(li);
+
+    let pen = document.createElement("button");
+    pen.innerHTML ="edit";
+    pen.classList.add("editButton");
+    pen.addEventListener("click", editTask);
+    li.appendChild(pen);
+
     let btn = document.createElement("button");
     btn.innerHTML = "X";
     btn.classList.add("deleteButton")
@@ -34,7 +41,7 @@ window.onload = function() {
   if (savedData) {
     listContainer.innerHTML = savedData;
   }
-  addDeleteButtonsToListItems();
+  // addDeleteButtonsToListItems();
   addDeleteEventListeners();
 }
 
@@ -83,3 +90,38 @@ listContainer.addEventListener("click", function (e) {
     localStorage.clear();
     listContainer.innerHTML = "";
   }
+
+
+  const editTask = (e) => {
+    let item = e.target.parentNode.querySelector('p').innerHTML;
+    let editInput = document.createElement("input");
+    editInput.type ="text";
+    editInput.value = item;
+    editInput.classList.add("edit");
+  
+    editInput.addEventListener("keypress", saveItem);
+    // editInput.addEventListener("click", saveItem);
+  
+    let pTags = e.target.parentNode.querySelectorAll('p');
+    pTags.forEach(p => e.target.parentNode.removeChild(p));
+  
+    
+    e.target.parentNode.prepend(editInput);
+  
+    editInput.select();
+  }
+  
+  const saveItem = (e) => { 
+    let inputValue = e.target.value;
+    if (e.target.value.length > 0 && (e.keyCode === 13)) {
+      console.log(inputValue);
+
+      let p = document.createElement ('p');
+      p.innerHTML = inputValue;
+      console.log(e.target)
+      e.target.parentNode.prepend(p);
+      e.target.parentNode.removeChild(e.target);
+      saveData();
+    }
+  }
+  
