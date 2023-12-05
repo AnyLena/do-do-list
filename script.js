@@ -34,9 +34,19 @@ window.onload = function() {
   if (savedData) {
     listContainer.innerHTML = savedData;
   }
+  addDeleteButtonsToListItems();
   addDeleteEventListeners();
 }
 
+function addDeleteButtonsToListItems() {
+  let listItems = document.querySelectorAll('#list-container li');
+  listItems.forEach(item => {
+    let deleteButton = document.createElement('button');
+    deleteButton.textContent = 'X';
+    deleteButton.className = 'deleteButton';
+    item.appendChild(deleteButton);
+  });
+}
 
 listContainer.addEventListener("click", function (e) {
   if (e.target.tagName === "LI") {
