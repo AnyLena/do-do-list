@@ -1,6 +1,7 @@
 const inputBox = document.getElementById("input-box");
 const listContainer = document.getElementById("list-container");
 const deleteBtn = document.querySelectorAll(".deleteButton");
+const editButton = document.querySelectorAll(".editButton");
 
 function addTask() {
    if (inputBox.value === ''){
@@ -23,6 +24,7 @@ function addTask() {
     li.appendChild(btn);
     btn.addEventListener("click", deleteTask);
     addDeleteEventListeners();
+    addEditEventListeners();
     saveData();
   }
   inputBox.value = "";
@@ -35,6 +37,14 @@ function addDeleteEventListeners() {
   });
 }
 
+function addEditEventListeners() {
+  let editButtons = document.querySelectorAll('.editButton');
+  editButtons.forEach(button => {
+    button.addEventListener('click', editTask);
+  });
+}
+
+
 
 window.onload = function() {
   let savedData = localStorage.getItem("data");
@@ -43,6 +53,7 @@ window.onload = function() {
   }
   // addDeleteButtonsToListItems();
   addDeleteEventListeners();
+  addEditEventListeners();
 }
 
 function addDeleteButtonsToListItems() {
@@ -94,6 +105,7 @@ listContainer.addEventListener("click", function (e) {
 
   const editTask = (e) => {
     let item = e.target.parentNode.querySelector('p').innerHTML;
+
     let editInput = document.createElement("input");
     editInput.type ="text";
     editInput.value = item;
@@ -114,14 +126,13 @@ listContainer.addEventListener("click", function (e) {
   const saveItem = (e) => { 
     let inputValue = e.target.value;
     if (e.target.value.length > 0 && (e.keyCode === 13)) {
-      console.log(inputValue);
 
       let p = document.createElement ('p');
       p.innerHTML = inputValue;
-      console.log(e.target)
       e.target.parentNode.prepend(p);
       e.target.parentNode.removeChild(e.target);
       saveData();
+      alert("Saved!")
     }
   }
   
