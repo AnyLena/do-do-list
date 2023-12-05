@@ -15,8 +15,37 @@ function addTask() {
     btn.classList.add("deleteButton")
     li.appendChild(btn);
     btn.addEventListener("click", deleteTask);
+    addDeleteEventListeners();
+    saveData();
   }
   inputBox.value = "";
+}
+
+function addDeleteEventListeners() {
+  let deleteButtons = document.querySelectorAll('.deleteButton');
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', deleteTask);
+  });
+}
+
+
+window.onload = function() {
+  let savedData = localStorage.getItem("data");
+  if (savedData) {
+    listContainer.innerHTML = savedData;
+  }
+  addDeleteButtonsToListItems();
+  addDeleteEventListeners();
+}
+
+function addDeleteButtonsToListItems() {
+  let listItems = document.querySelectorAll('#list-container li');
+  listItems.forEach(item => {
+    let deleteButton = document.createElement('button');
+    deleteButton.textContent = 'X';
+    deleteButton.className = 'deleteButton';
+    item.appendChild(deleteButton);
+  });
 }
 
 listContainer.addEventListener("click", function (e) {
@@ -39,6 +68,18 @@ listContainer.addEventListener("click", function (e) {
   }
   showTasks()
 
+  const removeitem = function () {
+    localStorage.removeItem("data");
+    listContainer.innerHTML = "";
+  }
+
   const deleteTask = (e) => {
     e.target.parentElement.remove();
+    saveData();
+  }
+  showTasks()
+  
+  const clearAll = function () {
+    localStorage.clear();
+    listContainer.innerHTML = "";
   }
