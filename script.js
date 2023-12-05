@@ -22,13 +22,23 @@ function addTask() {
 listContainer.addEventListener("click", function (e) {
   if (e.target.tagName === "LI") {
     e.target.classList.toggle("checked");
+    saveData();
   }
     else if (e.target.tagName === "SPAN") {
       e.target.parentElement.remove();
+      saveData();
     }
   }, false);
 
+  function saveData() {
+    localStorage.setItem("data", listContainer.innerHTML);
+  }
 
-const deleteTask = (e) => {
-  e.target.parentElement.remove();
-}
+  function showTasks() {
+    listContainer.innerHTML = localStorage.getItem("data");
+  }
+  showTasks()
+
+  const deleteTask = (e) => {
+    e.target.parentElement.remove();
+  }
