@@ -50,6 +50,8 @@ input{
     outline: none;
     background: transparent;
     padding: 10px;
+    font-size: 17px;
+    font-family: 'Poppins', sans-serif;
 }
 
 button{
@@ -90,18 +92,45 @@ ul li.checked{
 }
 
 ul li.checked::before{
-    background-image: url(images/checked.png);
+    background-image: url(images/checked2.png);
 }
 
 .deleteButton {
     border: none;
     outline: none;
     padding: 2px 6px;
-    background-color: lightgrey;
+    background-color: #ff5946;
     font-size: 16px;
     cursor: pointer;
     border-radius:  40px;
     text-align: right;
-    position: absolute;
-    right: 10px;
   }
+
+.editButton {
+    border: none;
+    outline: none;
+    padding: 2px 6px;
+    background: linear-gradient(135deg,#153677,#4e085f);
+    font-size: 16px;
+    cursor: pointer;
+    border-radius:  40px;
+    text-align: right;
+  }
+
+.clearAll {
+   margin: 50px auto 0px auto;
+   text-align: center;
+
+  }
+
+li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: solid #153677 1px;
+}
+
+p {
+    margin-right: auto;
+    padding: 5px 0px 10px 0px;
+}
