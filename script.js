@@ -3,8 +3,8 @@ const listContainer = document.getElementById("list-container");
 const deleteBtn = document.querySelectorAll(".deleteButton");
 const editButton = document.querySelectorAll(".editButton");
 
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
+
+// ADDING A NEW TASK 
 
 function addTask() {
    if (inputBox.value === ''){
@@ -33,6 +33,10 @@ function addTask() {
   inputBox.value = "";
 }
 
+
+// FUNCTIONS FOR ADDING EVENT LISTENERS TO BUTTONS
+// FUNCTIONS FOR ADDING DELETE-BUTTONS
+
 function addDeleteEventListeners() {
   let deleteButtons = document.querySelectorAll('.deleteButton');
   deleteButtons.forEach(button => {
@@ -46,16 +50,6 @@ function addEditEventListeners() {
     button.addEventListener('click', editTask);
   });
 }
-  
-window.onload = function() {
-  let savedData = localStorage.getItem("data");
-  if (savedData) {
-    listContainer.innerHTML = savedData;
-  }
-  // addDeleteButtonsToListItems();
-  addDeleteEventListeners();
-  addEditEventListeners();
-}
 
 function addDeleteButtonsToListItems() {
   let listItems = document.querySelectorAll('#list-container li');
@@ -67,9 +61,24 @@ function addDeleteButtonsToListItems() {
   });
 }
 
+// PULLING DATA FROM LOCAL STORAGE ONLOAD AND DISPLAYING IN TO-DO-LIST
+
+window.onload = function() {
+  let savedData = localStorage.getItem("data");
+  if (savedData) {
+    listContainer.innerHTML = savedData;
+  }
+  // addDeleteButtonsToListItems();
+  addDeleteEventListeners();
+  addEditEventListeners();
+}
+
+//STRIKE THROUGH TASKS MAKRED AS DONE
+
 listContainer.addEventListener("click", function (e) {
-  if (e.target.tagName === "LI") {
-    e.target.classList.toggle("checked");
+  if (e.target.tagName === "LI" || e.target.tagName === "P") {
+    let targetElement = e.target.tagName === "P" ? e.target.parentElement : e.target;
+    targetElement.classList.toggle("checked");
     saveData();
   }
     else if (e.target.tagName === "SPAN") {

@@ -109,7 +109,7 @@ ul li.checked::before{
 .editButton {
     border: none;
     outline: none;
-    padding: 2px 6px;
+    padding: 2px 10px;
     background: linear-gradient(135deg,#153677,#4e085f);
     font-size: 16px;
     cursor: pointer;
