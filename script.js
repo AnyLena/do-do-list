@@ -2,6 +2,9 @@ const inputBox = document.getElementById("input-box");
 const listContainer = document.getElementById("list-container");
 const deleteBtn = document.querySelectorAll(".deleteButton");
 
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+
 function addTask() {
    if (inputBox.value === ''){
     alert("You must write something!")
@@ -83,3 +86,4 @@ listContainer.addEventListener("click", function (e) {
     localStorage.clear();
     listContainer.innerHTML = "";
   }
+
