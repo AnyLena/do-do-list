@@ -3,8 +3,8 @@ const listContainer = document.getElementById("list-container");
 const deleteBtn = document.querySelectorAll(".deleteButton");
 const editButton = document.querySelectorAll(".editButton");
 
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
+
+// ADDING A NEW TASK 
 
 function addTask() {
    if (inputBox.value === ''){
@@ -33,6 +33,10 @@ function addTask() {
   inputBox.value = "";
 }
 
+
+// FUNCTIONS FOR ADDING EVENT LISTENERS TO BUTTONS
+// FUNCTIONS FOR ADDING DELETE-BUTTONS
+
 function addDeleteEventListeners() {
   let deleteButtons = document.querySelectorAll('.deleteButton');
   deleteButtons.forEach(button => {
@@ -46,16 +50,6 @@ function addEditEventListeners() {
     button.addEventListener('click', editTask);
   });
 }
-  
-window.onload = function() {
-  let savedData = localStorage.getItem("data");
-  if (savedData) {
-    listContainer.innerHTML = savedData;
-  }
-  // addDeleteButtonsToListItems();
-  addDeleteEventListeners();
-  addEditEventListeners();
-}
 
 function addDeleteButtonsToListItems() {
   let listItems = document.querySelectorAll('#list-container li');
@@ -67,9 +61,24 @@ function addDeleteButtonsToListItems() {
   });
 }
 
+// PULLING DATA FROM LOCAL STORAGE ONLOAD AND DISPLAYING IN TO-DO-LIST
+
+window.onload = function() {
+  let savedData = localStorage.getItem("data");
+  if (savedData) {
+    listContainer.innerHTML = savedData;
+  }
+  // addDeleteButtonsToListItems();
+  addDeleteEventListeners();
+  addEditEventListeners();
+}
+
+//STRIKE THROUGH TASKS MAKRED AS DONE
+
 listContainer.addEventListener("click", function (e) {
-  if (e.target.tagName === "LI") {
-    e.target.classList.toggle("checked");
+  if (e.target.tagName === "LI" || e.target.tagName === "P") {
+    let targetElement = e.target.tagName === "P" ? e.target.parentElement : e.target;
+    targetElement.classList.toggle("checked");
     saveData();
   }
     else if (e.target.tagName === "SPAN") {
@@ -103,17 +112,26 @@ listContainer.addEventListener("click", function (e) {
     listContainer.innerHTML = "";
   }
 
+  // ADDING EDIT TASK FUNCTIONALITY 
+
   const editTask = (e) => {
-    let item = e.target.parentNode.querySelector('p').innerHTML;
+
+    let item = '';
+    if (e.target.parentNode.querySelector('p')) {
+    item = e.target.parentNode.querySelector('p').innerHTML;
+    }
 
     let editInput = document.createElement("input");
     editInput.type ="text";
     editInput.value = item;
     editInput.classList.add("edit");
-  
-    editInput.addEventListener("keypress", saveItem);
-    // editInput.addEventListener("click", saveItem);
-  
+
+    e.target.innerHTML = "save"
+
+    editInput.addEventListener("keypress", saveItem) 
+    e.target.removeEventListener("click", editTask);
+    e.target.addEventListener("click", saveItem);
+
     let pTags = e.target.parentNode.querySelectorAll('p');
     pTags.forEach(p => e.target.parentNode.removeChild(p));
   
@@ -124,14 +142,43 @@ listContainer.addEventListener("click", function (e) {
   }
   
   const saveItem = (e) => { 
+
     let inputValue = e.target.value;
-    if (e.target.value.length > 0 && (e.keyCode === 13)) {
+
+    if (inputValue.length > 0 && e.keyCode === 13) {
 
       let p = document.createElement ('p');
       p.innerHTML = inputValue;
       e.target.parentNode.prepend(p);
       e.target.parentNode.removeChild(e.target);
+
+      let editButton = document.querySelectorAll('.editButton');
+      editButton.forEach( (button) => button.innerHTML = "edit")
+      editButton.forEach( (button) => button.removeEventListener("click", saveItem))
+      editButton.forEach( (button) => button.addEventListener("click", editTask))
       saveData();
-      alert("Saved!")
+    }
+
+    if (e.type === 'click') {
+      let inputField = document.querySelector('input.edit');
+      let inputValue = inputField ? inputField.value : '';
+    
+      let p = document.createElement ('p');
+      p.innerHTML = inputValue;
+    
+      let button = e.target.parentNode.querySelector('.editButton');
+      e.target.parentNode.insertBefore(p, button);
+    
+      if (inputField) {
+        inputField.parentNode.removeChild(inputField);
+      }
+
+      let editButton = document.querySelectorAll('.editButton');
+      editButton.forEach( (button) => button.innerHTML = "edit")
+      editButton.forEach( (button) => button.removeEventListener("click", saveItem))
+      editButton.forEach( (button) => button.addEventListener("click", editTask))
+
+
+      saveData();
     }
   }
