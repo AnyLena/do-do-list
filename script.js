@@ -3,6 +3,9 @@ const listContainer = document.getElementById("list-container");
 const deleteBtn = document.querySelectorAll(".deleteButton");
 const editButton = document.querySelectorAll(".editButton");
 
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+
 function addTask() {
    if (inputBox.value === ''){
     alert("You must write something!")
@@ -43,9 +46,7 @@ function addEditEventListeners() {
     button.addEventListener('click', editTask);
   });
 }
-
-
-
+  
 window.onload = function() {
   let savedData = localStorage.getItem("data");
   if (savedData) {
@@ -102,7 +103,6 @@ listContainer.addEventListener("click", function (e) {
     listContainer.innerHTML = "";
   }
 
-
   const editTask = (e) => {
     let item = e.target.parentNode.querySelector('p').innerHTML;
 
@@ -135,4 +135,3 @@ listContainer.addEventListener("click", function (e) {
       alert("Saved!")
     }
   }
-  
